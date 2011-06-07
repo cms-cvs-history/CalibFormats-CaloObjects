@@ -1,5 +1,0 @@
-<environment>
-  <use name="CalibFormats/CaloObjects"/>
-  <bin file="CaloSamplesTest.cpp"/>
-</environment>
-
