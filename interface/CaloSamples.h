@@ -37,7 +37,7 @@ public:
   /// set presample information
   void setPresamples(int pre);
 
-  /// multiply each item by this value
+  /// multiply each item by this value. Scales precise data, too
   CaloSamples& scale(double value);
   /// scale all samples
   CaloSamples& operator*=(double value) { return scale(value); }
