@@ -1,5 +1,6 @@
 #include "CalibFormats/CaloObjects/interface/CaloSamples.h"
 #include <math.h>
+#include<algorithm>
 
 CaloSamples::CaloSamples() : id_(), size_(0), presamples_(0), preciseSize_(0), precisePresamples_(0) { setBlank() ; }
 CaloSamples::CaloSamples(const DetId& id, int size) :
@@ -70,8 +71,16 @@ CaloSamples::setBlank() // keep id, presamples, size but zero out data
 std::ostream& operator<<(std::ostream& s, const CaloSamples& samples) {
   s << "DetId=" << samples.id().rawId();
   s << ", "<<  samples.size() << "samples" << std::endl;
-  for (int i=0; i<samples.size(); i++)
-    s << i << ":" << samples[i] << std::endl;
+  // print out every so many precise samples
+  float preciseStep = samples.preciseSize()/samples.size();
+  for (int i=0; i<samples.size(); i++) {
+    s << i << ":" << samples[i];
+    int precisei = i*preciseStep;
+    if(precisei < samples.preciseSize()) {
+      s << " " << samples.preciseAt(precisei) ;
+    }
+    s << std::endl;
+  }
   return s;
 }
 
