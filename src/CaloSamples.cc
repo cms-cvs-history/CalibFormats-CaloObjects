@@ -1,6 +1,6 @@
 #include "CalibFormats/CaloObjects/interface/CaloSamples.h"
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include <math.h>
-#include<algorithm>
 
 CaloSamples::CaloSamples() : id_(), size_(0), presamples_(0), preciseSize_(0), precisePresamples_(0) { setBlank() ; }
 CaloSamples::CaloSamples(const DetId& id, int size) :
@@ -49,6 +49,25 @@ CaloSamples::operator+=(double value)
      (*j)+=value*deltaTprecise_/25.0; // note that the scale is conserved!
 
    return (*this);
+}
+
+CaloSamples&
+CaloSamples::operator+=(const CaloSamples & other) 
+{
+  if(size_ != other.size_ ||
+     presamples_ != other.presamples_ ||
+     preciseSize_ != other.preciseSize_)
+  {
+    edm::LogError("CaloHitResponse") << "Mismatched calo signals "; 
+  }
+  int i;
+  for(i = 0; i < size_; ++i) {
+    data_[i] += other.data_[i];
+  }
+  for(i = 0; i < preciseSize_; ++i) {
+    preciseData_[i] += other.preciseData_[i];
+  }
+  return *this;
 }
 
 bool 

@@ -44,6 +44,7 @@ public:
 
   /// add a value to all samples
   CaloSamples& operator+=(double value);
+  CaloSamples& operator+=(const CaloSamples & other);
 
   void setDetId( DetId detId ) { id_ = detId ; }
 
