@@ -28,9 +28,9 @@ public:
   double operator[](int i) const { return data_[i]; }
 
   /// mutable function to access precise samples
-  double& preciseAtMod(int i) { return preciseData_[i]; }
+  float& preciseAtMod(int i) { return preciseData_[i]; }
   /// const function to access precise samples
-  double preciseAt(int i) const { return preciseData_[i]; }
+  float preciseAt(int i) const { return preciseData_[i]; }
 
   /// access presample information
   int presamples() const { return presamples_; }
@@ -55,7 +55,7 @@ public:
   void setBlank() ; // keep id, presamples, size but zero out data
 
   /// get the size
-  int preciseSize() const { return preciseSize_; }
+  int preciseSize() const { if ( preciseData_.size() ==0 ) return 0; return preciseSize_; }
   int precisePresamples() const { return precisePresamples_; }
   float preciseDeltaT() const { return deltaTprecise_; }
 
@@ -64,13 +64,15 @@ public:
     deltaTprecise_=deltaT;
   }
 
+  void resetPrecise();
+
   static const int MAXSAMPLES=10;
 private:
   DetId id_;
   double data_[MAXSAMPLES]; // 
   int size_, presamples_;
   float deltaTprecise_;
-  std::vector<double> preciseData_;
+  std::vector<float> preciseData_;
   int preciseSize_,precisePresamples_;
 };
 
